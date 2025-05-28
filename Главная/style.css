@@ -55,10 +55,26 @@ body {
 }
 
 .logo {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     font-weight: 800;
     color: var(--logo-accent);
     letter-spacing: 2px;
+    font-family: 'Arial black', sans-serif;
+    user-select: none;
+}
+
+.logo-s {
+    color: #fff;
+    animation: logoSAnim 1.6s infinite cubic-bezier(.4,2,.6,1);
+    display: inline-block;
+    text-shadow: 0 0 8px #fff, 0 0 16px var(--logo-accent, #A13A97);
+}
+
+@keyframes logoSAnim {
+    0%   { transform: scale(1) rotate(0deg); text-shadow: 0 0 8px #fff, 0 0 16px var(--logo-accent, #A13A97);}
+    30%  { transform: scale(1.18) rotate(-8deg); text-shadow: 0 0 16px #fff, 0 0 32px var(--logo-accent, #A13A97);}
+    60%  { transform: scale(1) rotate(0deg); text-shadow: 0 0 8px #fff, 0 0 16px var(--logo-accent, #A13A97);}
+    100% { transform: scale(1) rotate(0deg); text-shadow: 0 0 8px #fff, 0 0 16px var(--logo-accent, #A13A97);}
 }
 
 .nav-links {
