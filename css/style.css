@@ -500,5 +500,14 @@ body {
     content: "";
     display: block;
   }
+   .faq-answer {
+    max-height: none !important; /* Убираем ограничение по высоте */
+    overflow: visible; /* Разрешаем переполнение */
+    padding: 16px 24px 24px 24px; /* Увеличиваем отступы */
+    font-size: 1rem; /* Уменьшаем размер шрифта, если нужно */
+  }
+  .faq-item.open .faq-answer {
+    max-height: none !important; /* Убираем ограничение по высоте при открытом элементе */
+  }
 }
 
