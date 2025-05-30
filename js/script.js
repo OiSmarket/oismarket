@@ -36,3 +36,18 @@ document.querySelectorAll('.faq-question').forEach(btn => {
     item.classList.toggle('open');
   });
 });
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('signup-form');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+    // Здесь ваш код для выполнения после нажатия на кнопку "Зарегистрироваться"
+    alert('Вы успешно зарегистрировались!'); // Пример: показываем сообщение
+
+    // Дополнительные действия:
+    // - Отправка данных на сервер (AJAX)
+    // - Перенаправление на другую страницу
+    // - Отображение сообщения об успехе
+  });
+});
