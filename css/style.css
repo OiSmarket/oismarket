@@ -492,9 +492,13 @@ body {
   .trust-reviews { gap: 10px; }
   .how-list li { font-size: 1rem; padding: 12px 16px; }
   .signup-form { padding: 20px 16px; }
-}
-.hero-highlight {
-    display: block;
-    margin-top: 8px; /* Можно скорректировать отступ по вкусу */
-    margin-bottom: 0;
+  .hero-highlight {
+    display: inline-block;
+    margin-top: 8px;
   }
+  .hero-highlight::before {
+    content: "";
+    display: block;
+  }
+}
+
