@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Твои данные SendPulse
   const SENDPULSE_CLIENT_ID = '6792a3504cb18f5f17059fd42de4e55a';
   const SENDPULSE_CLIENT_SECRET = 'd0b79b3450bb42e748db3c46e58c1269';
-  const SENDPULSE_BOOK_ID = 'ТВОЙ_BOOK_ID'; // Заменить на ID книги контактов
+  const SENDPULSE_BOOK_ID = '657102'; // Заменить на ID книги контактов
 
   // Генерация UUID v4
   function generateUUID() {
