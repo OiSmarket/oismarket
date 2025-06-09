@@ -147,3 +147,6 @@ document.querySelectorAll('.faq-question').forEach(btn => {
       console.error(error);
     }
   });
+const result = await response.json();
+console.log('SendPulse API response:', result);
+if (!result.result) throw new Error('Ошибка при добавлении контакта');
