@@ -51,7 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // - Отображение сообщения об успехе
   });
 });
-// Функция для генерации UUID v4
+
+// Твои данные SendPulse
+  const SENDPULSE_CLIENT_ID = '6792a3504cb18f5f17059fd42de4e55a';
+  const SENDPULSE_CLIENT_SECRET = 'd0b79b3450bb42e748db3c46e58c1269';
+  const SENDPULSE_BOOK_ID = 'ТВОЙ_BOOK_ID'; // Заменить на ID книги контактов
+
+  // Генерация UUID v4
   function generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -59,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Получение параметра userid из URL
+  // Получение параметра из URL
   function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -88,6 +94,40 @@ document.addEventListener('DOMContentLoaded', function() {
     return null;
   }
 
+  // Получение access token SendPulse
+  async function getAccessToken() {
+    const response = await fetch('https://api.sendpulse.com/oauth/access_token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `grant_type=client_credentials&client_id=${SENDPULSE_CLIENT_ID}&client_secret=${SENDPULSE_CLIENT_SECRET}`
+    });
+    const data = await response.json();
+    if (!data.access_token) throw new Error('Не удалось получить access token');
+    return data.access_token;
+  }
+
+  // Добавление контакта в SendPulse CRM
+  async function addContact(email, userid) {
+    const token = await getAccessToken();
+
+    const response = await fetch('https://api.sendpulse.com/crm/v1/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        book_id: SENDPULSE_BOOK_ID,
+        emails: [email],
+        variables: { userid: userid }
+      })
+    });
+
+    const result = await response.json();
+    if (!result.result) throw new Error('Ошибка при добавлении контакта');
+    return result;
+  }
+
   (function() {
     let userid = getUrlParameter('userid');
     if (userid) {
@@ -102,8 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('useridField').value = userid;
   })();
 
-  // Обработка отправки формы
-  document.getElementById('signup-form').addEventListener('submit', function(e) {
+  document.getElementById('signup-form').addEventListener('submit', async function(e) {
     e.preventDefault();
 
     const email = this.email.value.trim();
@@ -114,22 +153,12 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    // Здесь нужно добавить отправку данных на сервер или в CRM
-    // Пример отправки через fetch (замени URL на свой endpoint)
-    fetch('https://your-server.com/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, userid: userid })
-    })
-    .then(response => {
-      if (response.ok) {
-        alert('Спасибо за регистрацию! Проверьте ваш e-mail.');
-        this.reset();
-      } else {
-        alert('Ошибка при регистрации. Попробуйте позже.');
-      }
-    })
-    .catch(() => {
-      alert('Ошибка сети. Попробуйте позже.');
-    });
+    try {
+      await addContact(email, userid);
+      alert('Спасибо за регистрацию! Проверьте ваш e-mail.');
+      this.reset();
+    } catch (error) {
+      alert('Ошибка при регистрации. Попробуйте позже.');
+      console.error(error);
+    }
   });
